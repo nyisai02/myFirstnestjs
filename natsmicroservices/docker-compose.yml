@@ -3,24 +3,39 @@ services:
     build: ./http-api-gateway
     ports:
       - "3000:3000"
-
     volumes:
       - ./http-api-gateway/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3000
-  uers-microservice:
-      build : ./uers-microservice
-      volumes:
-        - ./uers-microservice/src:/usr/src/app/src
-      command: npm run start:dev
+    depends_on:
+      - nats
+
+  users-microservice:
+    build: ./users-microservice
+    volumes:
+      - ./users-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - nats
+
   payments-microservice:
-      build : ./payments-microservice
-      volumes:
-        - ./payments-microservice/src:/usr/src/app/src
-      command: npm run start:dev
+    build: ./payments-microservice
+    volumes:
+      - ./payments-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - nats
+
+  ai-microservice:
+    build: ./ai-microservice
+    volumes:
+      - ./ai-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - nats
 
   nats:
-    image : nats
+    image: nats
     ports:
       - 4222:4222
