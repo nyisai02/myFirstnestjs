@@ -7,7 +7,7 @@ export class AiController {
   constructor(private readonly aiService: AiService) {}
 
   @MessagePattern({ cmd: 'ai_process' })
-  handleAiProcess(data: any) {
-    return this.aiService.processData(data);
+  async handleAiProcess(data: { prompt: string }) {
+    return await this.aiService.processData(data);
   }
 }

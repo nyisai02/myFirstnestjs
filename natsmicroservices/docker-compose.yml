@@ -10,6 +10,7 @@ services:
       - PORT=3000
     depends_on:
       - nats
+      - ai-microservice
 
   users-microservice:
     build: ./users-microservice
@@ -34,8 +35,16 @@ services:
     command: npm run start:dev
     depends_on:
       - nats
+      - ollama
 
   nats:
     image: nats
     ports:
       - 4222:4222
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - 11434:11434
+    volumes:
+      - ./ollama_data:/root/.ollama
